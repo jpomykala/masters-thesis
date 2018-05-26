@@ -5,6 +5,7 @@ import shutil
 import glob2
 import matplotlib.pyplot as plt
 import numpy as np
+from string import digits
 
 
 def show_summary_plot(path, filter_less_than=0):
@@ -19,6 +20,7 @@ def show_summary_plot(path, filter_less_than=0):
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba dokumentów')
     plt.show()
+
 
 
 def end_path_with_slash(path):
@@ -118,6 +120,24 @@ def redistribute_to_categories(files, dir_path, min_per_category=0, max_per_cate
 
 
 file_id = 0
+
+
+def redistribute_to_categories_wiki(from_dir, to_dir):
+    from_dir = end_path_with_slash(from_dir)
+    to_dir = end_path_with_slash(to_dir)
+    shutil.rmtree(to_dir, ignore_errors=True)
+
+    for file_name in os.listdir(from_dir):
+        category_name = get_category_name(file_name)
+        write_to_category(file_name, to_dir, category_name)
+
+
+def get_category_name(file_name):
+    remove_digits = str.maketrans('', '', digits)
+    output = file_name.translate(remove_digits)
+    output = output.replace('_', '')
+    output = output.replace('.txt', '')
+    return output
 
 
 def write_to_category(file, path_to_category, category):
