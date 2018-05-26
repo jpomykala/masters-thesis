@@ -19,8 +19,8 @@ def show_summary_plot(path, filter_less_than=0):
     plt.barh(y_pos, values, align='center', alpha=0.5)
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba dokumentów')
+    # plt.savefig('test', dpi=1600)
     plt.show()
-
 
 
 def end_path_with_slash(path):
@@ -47,7 +47,6 @@ def summarize_plot_words(path):
     plt.xlabel('Średnia ilość lematów')
     plt.show()
     return output
-
 
 
 def summarize_words(category_dir):
@@ -124,12 +123,13 @@ file_id = 0
 
 def redistribute_to_categories_wiki(from_dir, to_dir):
     from_dir = end_path_with_slash(from_dir)
-    to_dir = end_path_with_slash(to_dir)
     shutil.rmtree(to_dir, ignore_errors=True)
 
     for file_name in os.listdir(from_dir):
         category_name = get_category_name(file_name)
-        write_to_category(file_name, to_dir, category_name)
+        file = open(from_dir + file_name, 'r')
+        body = file.read()
+        write_to_category_v2(body, to_dir, category_name)
 
 
 def get_category_name(file_name):
@@ -138,6 +138,16 @@ def get_category_name(file_name):
     output = output.replace('_', '')
     output = output.replace('.txt', '')
     return output
+
+
+def write_to_category_v2(text, path_to_category, category):
+    global file_id
+    file_id += 1
+
+    path_to_file = path_to_category + "/" + category + "/"
+    pathlib.Path(path_to_file).mkdir(parents=True, exist_ok=True)
+    with open(path_to_file + str(file_id) + '.txt', "w+", encoding="utf-8") as outfile:
+        outfile.write(text)
 
 
 def write_to_category(file, path_to_category, category):

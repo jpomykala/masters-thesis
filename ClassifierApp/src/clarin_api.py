@@ -41,16 +41,6 @@ def process(data):
         return None
     return data["value"]
 
-
-# def create_pos_file(text, write_path):
-#     data = {'lpmn': lpmn, 'user': user, 'text': text}
-#     data = process(data)
-#     data = data[0]["fileID"]
-#     download_req = urllib.request.Request(url + '/download' + data)
-#     content = urllib.request.urlopen(download_req).read().decode("utf-8")
-#     with open(write_path + '.ccl', "w", encoding="utf-8") as outfile:
-#         outfile.write(content)
-
 def process_text(source_file, output_file):
     print("[T] processing: " + source_file)
     file = open(source_file, "r", encoding="utf-8")

@@ -20,6 +20,20 @@ def ccl_to_lemma(input_file, output_file):
     save_text(output_file, content)
 
 
+def ccl_to_lemma_noun(input_file, output_file):
+    tree = ElementTree.parse(input_file)
+    root = tree.getroot()
+    base_words = []
+    for token in root.getiterator('tok'):
+        base = token.find('lex').find('base').text
+        base_words.append(base)
+        c_tag = token.find('lex').find('ctag').text
+
+    output_file = output_file + ".lemma"
+    content = " ".join(base_words)
+    save_text(output_file, content)
+
+
 def read_stop_words_list(path):
     full_path = os.path.abspath(path)
     output = list(open(full_path, encoding="utf-8"))
