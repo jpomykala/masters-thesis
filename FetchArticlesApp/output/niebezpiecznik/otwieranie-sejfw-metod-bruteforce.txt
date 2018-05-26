@@ -1,0 +1,1 @@
+Miesiąc temu pisaliśmy o łamaniu PIN-ów metodą brute-force, dziś prezentujemy robota, który w kilka godzin otworzy “odporny na manipulacje” sejf. Robot otwierający sejfy Projekt jest dziełem dwóch studentów MIT. Pokonany sejf ma zamek Sargent and Greenleaf 8500. Zobacz też jak otworzyć popularny zamek za pomocą papieru toaletowego… źródło ,igH

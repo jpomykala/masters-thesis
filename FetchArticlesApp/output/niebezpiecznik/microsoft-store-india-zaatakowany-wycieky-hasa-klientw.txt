@@ -1,0 +1,1 @@
+EvilShadow team uzyskał dostęp do bazy danych indyjskiego sklepu internetowego Microsoftu. Wykradziono i opublikowano hasła. Co gorsza, okazało się, że hasła były trzymane w plaintext: Obecnie strona indyjskiego sklepu Microsoftu informuje o “awarii” i wyświetla następujący komunikat: ,igH

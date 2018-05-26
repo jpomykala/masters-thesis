@@ -1,0 +1,1 @@
+Kilka osób podesłało nam e-maile, jakie atakujący wysyłają, licząc, że trafią na naiwnych klientów banku ING. Phishing ING Link z e-maila kieruje do: hxxp://smaa-smo.org/%20/ssl.bsk.com.pl/bskonl/login.html?ssl=http://www.ingbank.pl/ssl.bsk.com.pl=1 Obecnie nie znajduje się tam żadna działająca strona. Podziękowania dla Michała i cysioland ,Mr. Niebezpieczny

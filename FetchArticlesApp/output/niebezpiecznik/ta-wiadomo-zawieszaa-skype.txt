@@ -1,0 +1,1 @@
+Wpisanie http://: w chacie na Skype powodowało (powoduje?) jego crash. Permanentny, bo po ponownym włączeniu historia była pobierana z “chmury”. Błąd został już ponoć naprawiony. ,vi.curry

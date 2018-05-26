@@ -1,0 +1,1 @@
+Ciekawa wizualizacja na weekend. Temat to Stuxnet, czyli złośliwe oprogramowanie, które znaleziono w systemach SCADA elektrowni atomowej w Iranie. Wszystko fajnie, ale 20 0day’ów? Ktoś ma listę? ,Mr. Niebezpieczny
