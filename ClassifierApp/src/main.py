@@ -10,6 +10,17 @@ from sklearn.svm import LinearSVC
 from src.method import fastTextMethod
 from src.method import bowMethod
 
+# lemma_dir = "../data/korpus/lemma"
+lemma_dir = "../data/wiki/lemma"
+
+korpus_name = "Wikipedia"
+
+plotFormat = "eps"
+dpi = None
+train_sizes = np.arange(0.01, 0.51, 0.03)
+iterations = 30 # liczba przebiegów
+plot_save_path = "/Users/evelan/Desktop/mgr.nosync/"
+
 
 def draw_fit_time_plot():
     plt.plot(train_samples_array, ft_fit_times, 'c-+', label="FastText")
@@ -19,8 +30,10 @@ def draw_fit_time_plot():
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('time [s]')
     plt.xlabel('number of examples')
-    plt.title('Fit time')
+    title = 'Fit time - ' + korpus_name
+    plt.title(title)
     plt.legend()
+    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
@@ -32,8 +45,10 @@ def draw_predict_time_plot():
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('time [s]')
     plt.xlabel('number of examples')
-    plt.title('Predict time')
+    title = 'Predict time - ' + korpus_name
+    plt.title(title)
     plt.legend()
+    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
@@ -45,11 +60,13 @@ def draw_time_plot():
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('time [s]')
     plt.xlabel('number of examples')
-    plt.title('Work time')
+    title = 'Total work time - ' + korpus_name
+    plt.title(title)
     plt.legend()
+    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
-    
-    
+
+
 def draw_accuracy_plot():
     plt.plot(train_samples_array, ft_accuracies, 'c-+', label="FastText")
     plt.plot(train_samples_array, nb_accuracies, 'r-*', label="NaiveBayes")
@@ -58,11 +75,13 @@ def draw_accuracy_plot():
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('accuracy')
     plt.xlabel('number of examples')
-    plt.title('Accuracy')
+    title = 'Accuracy - ' + korpus_name
+    plt.title(title)
     plt.legend()
+    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
-    
-    
+
+
 def draw_f1_plot():
     plt.plot(train_samples_array, ft_f1_array, 'c-+', label="FastText")
     plt.plot(train_samples_array, nb_f1_array, 'r-*', label="NaiveBayes")
@@ -71,9 +90,12 @@ def draw_f1_plot():
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('f1-score')
     plt.xlabel('number of examples')
-    plt.title('Miara f1')
+    title = 'F1-score - ' + korpus_name
+    plt.title(title)
     plt.legend()
+    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
+
 
 def draw_fastText_plot():
     plt.plot(train_samples_array, fastText_accuracies_1, 'r-*', label="epoch = 5")
@@ -84,15 +106,12 @@ def draw_fastText_plot():
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('accuracy')
     plt.xlabel('number of examples')
-    plt.title('Learning curve - fastText')
+    title = 'Learning curve - fastText'
+    plt.title(title)
     plt.legend()
+    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
-
-lemma_dir = "../data/korpus/lemma"
-
-train_sizes = np.arange(0.01, 0.51, 0.03)
-iterations = 3  # liczba przebiegów
 step = 0  # do obliczania % ukonczenia
 
 train_samples_array = []
@@ -149,9 +168,11 @@ for train_size in train_sizes:
 
     train_samples_array.append(samples_count)
 
-    ft_f1, ft_acc, ft_fit_time, ft_predict_time = fastTextMethod.invoke(d_train, d_test, t_train, t_test, ft_clf, iterations)
+    ft_f1, ft_acc, ft_fit_time, ft_predict_time = fastTextMethod.invoke(d_train, d_test, t_train, t_test, ft_clf,
+                                                                        iterations)
     nb_f1, nb_acc, nb_fit_time, nb_predict_time = bowMethod.invoke(d_train, d_test, t_train, t_test, nb_clf, iterations)
-    svm_f1, svm_acc, svm_fit_time, svm_predict_time = bowMethod.invoke(d_train, d_test, t_train, t_test, svm_clf, iterations)
+    svm_f1, svm_acc, svm_fit_time, svm_predict_time = bowMethod.invoke(d_train, d_test, t_train, t_test, svm_clf,
+                                                                       iterations)
     dt_f1, dt_acc, dt_fit_time, dt_predict_time = bowMethod.invoke(d_train, d_test, t_train, t_test, dt_clf, iterations)
 
     ft_fit_times.append(ft_fit_time)
@@ -173,7 +194,7 @@ for train_size in train_sizes:
     nb_accuracies.append(nb_acc)
     svm_accuracies.append(svm_acc)
     dt_accuracies.append(dt_acc)
-    
+
     ft_f1_array.append(ft_f1)
     nb_f1_array.append(nb_f1)
     svm_f1_array.append(svm_f1)
@@ -183,6 +204,6 @@ for train_size in train_sizes:
     print("Finished:", str(step / len(train_sizes)) + "%")
     draw_f1_plot()
     draw_accuracy_plot()
-    # draw_fit_time_plot()
-    # draw_predict_time_plot()
+    draw_fit_time_plot()
+    draw_predict_time_plot()
     draw_time_plot()
