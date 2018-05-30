@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.xml.bind.JAXB;
+import lombok.Setter;
 import pl.pwr.edu.parser.domain.Article;
 import pl.pwr.edu.parser.writer.path.PathBySourceResolver;
 import pl.pwr.edu.parser.writer.path.PathResolver;
@@ -16,18 +17,13 @@ import pl.pwr.edu.parser.writer.path.PathResolver;
  */
 public class XMLWriter implements ArticleWriter {
 
-	private final String BASE_WRITE_PATH;
+	@Setter
 	private PathResolver pathResolver;
-
-	public XMLWriter(String path) {
-		this.BASE_WRITE_PATH = path;
-		pathResolver = new PathBySourceResolver();
-	}
 
 	@Override
 	public void write(Article article) throws IOException {
 		String relativePath = pathResolver.resolveRelativePath(article);
-		String absolutePath = BASE_WRITE_PATH + File.separator + relativePath;
+		String absolutePath = pathResolver.getBasePath() + File.separator + relativePath;
 		Files.createDirectories(Paths.get(absolutePath));
 		String fileName = pathResolver.resolveFileName(article) + ".xml";
 		String pathWithFileName = absolutePath + File.separator + fileName;

@@ -19,7 +19,6 @@ def show_summary_plot(path, filter_less_than=0):
     plt.barh(y_pos, values, align='center', alpha=0.5)
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba dokumentów')
-    # plt.savefig('test', dpi=1600)
     plt.show()
 
 

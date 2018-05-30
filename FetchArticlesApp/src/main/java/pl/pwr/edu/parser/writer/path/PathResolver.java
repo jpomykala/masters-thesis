@@ -11,4 +11,8 @@ public interface PathResolver {
 
 	String resolveFileName(Article article);
 
+	String getBasePath();
+
+
+
 }

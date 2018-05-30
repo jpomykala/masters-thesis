@@ -1,8 +1,7 @@
-from sklearn.metrics import accuracy_score, f1_score, roc_auc_score, auc, average_precision_score
-from sklearn.pipeline import Pipeline
 import time
-import numpy as np
 
+import numpy as np
+from sklearn.pipeline import Pipeline
 
 text_category = "../data/korpus/text"
 ccl_category = "../data/korpus/ccl"
@@ -10,28 +9,7 @@ lemma_category = "../data/korpus/lemma"
 raw_files = "../data/korpus/raw"
 
 
-def invoke(X_train, X_test, y_train, y_test, clf, iterations):
-    fit_time_acc = 0
-    predict_time_acc = 0
-    accuracy_acc = 0
-    roc_auc_acc = 0
-
-    for iter_index in range(0, iterations):
-        y_pred, fit_time, predict_time, y_score = iter_step(X_train, X_test, y_train, clf)
-        fit_time_acc += fit_time
-        predict_time_acc += predict_time
-        accuracy_acc += accuracy_score(y_test, y_pred)
-        # roc_auc_acc += roc_auc_score(target_test, y_score)
-
-    mean_fit_time = fit_time_acc / iterations
-    mean_predict_time = predict_time_acc / iterations
-    mean_accuracy = accuracy_acc / iterations
-    mean_roc_auc_acc = roc_auc_acc / iterations
-
-    return mean_roc_auc_acc, mean_accuracy, mean_fit_time, mean_predict_time
-
-
-def iter_step(X_train, X_test, y_train, clf):
+def learn_predict(X_train, X_test, y_train, clf):
     pipeline = Pipeline([
         ('clf', clf)
     ])

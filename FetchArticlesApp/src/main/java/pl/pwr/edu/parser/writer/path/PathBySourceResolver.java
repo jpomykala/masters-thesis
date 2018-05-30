@@ -18,6 +18,12 @@ import pl.pwr.edu.parser.util.StringUtils;
  */
 public final class PathBySourceResolver implements PathResolver {
 
+	private String path;
+
+	public PathBySourceResolver(String path) {
+		this.path = path;
+	}
+
 	@Override
 	public String resolveRelativePath(Article article) {
 		String sourceName = Optional.ofNullable(article)
@@ -52,6 +58,11 @@ public final class PathBySourceResolver implements PathResolver {
 				.map(ArticleAdapter::of)
 				.map(ArticleAdapter::getCleanTitle)
 				.orElseGet(this::getDefaultName);
+	}
+
+	@Override
+	public String getBasePath() {
+		return path;
 	}
 
 	private String getDefaultName() {

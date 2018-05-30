@@ -7,26 +7,33 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
+from src import calc_wrapper
 from src.confusion import plot_confusion_matrix
+from src.consts import plotFormat, dpi, plot_save_path
 from src.method import bowMethod
 from src.method import fastTextMethod
 
-#lemma_dir = "../data/wiki/lemma"
-lemma_dir = "../data/korpus/lemma"
+lemma_dir = "../data/wiki/lemma"
+# lemma_dir = "../data/korpus/lemma"
+korpus_name = "Wikipedia"
+# korpus_name = "Articles"
 
-#korpus_name = "Wikipedia"
-korpus_name = "Articles"
-
-plotFormat = "eps"
-dpi = None
 # train_sizes = np.arange(0.01, 0.51, 0.03)
-train_sizes = [0.7]
-# train_sizes = [0.1]
-iterations = 1 # liczba przebiegów
-plot_save_path = "/Users/evelan/Desktop/mgr.nosync/"
+train_sizes = [0.6]
+iterations = 1
 
 
 def show_confusion_matrix(y_test, y_pred, class_names, title):
+    cnf_matrix = confusion_matrix(y_test, y_pred)
+    plt.figure()
+    title = title + ' - ' + korpus_name
+    plot_confusion_matrix(cnf_matrix, classes=class_names, title=title)
+    title = title.lower()
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat, bbox_inches='tight')
+    plt.show()
+
+
+def show_table_matrix(y_test, y_pred, class_names, title):
     cnf_matrix = confusion_matrix(y_test, y_pred)
     plt.figure()
     title = title + ' - ' + korpus_name
@@ -47,22 +54,22 @@ def draw_fit_time_plot():
     title = 'Fit time - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
 def draw_predict_time_plot():
-    plt.plot(train_samples_array, ft_predict_times, 'c-+', label="FastText")
-    plt.plot(train_samples_array, nb_predict_times, 'r-*', label="NaiveBayes")
-    plt.plot(train_samples_array, svm_predict_times, 'g-^', label="SVM")
-    plt.plot(train_samples_array, dt_predict_times, 'b-s', label="Decision Tree")
+    plt.plot(list(reversed(test_samples_array)), list(reversed(ft_predict_times)), 'c-+', label="FastText")
+    plt.plot(list(reversed(test_samples_array)), list(reversed(nb_predict_times)), 'r-*', label="NaiveBayes")
+    plt.plot(list(reversed(test_samples_array)), list(reversed(svm_predict_times)), 'g-^', label="SVM")
+    plt.plot(list(reversed(test_samples_array)), dt_predict_times, 'b-s', label="Decision Tree")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('time [s]')
     plt.xlabel('number of examples')
     title = 'Predict time - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
@@ -77,7 +84,7 @@ def draw_time_plot():
     title = 'Total work time - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
@@ -92,7 +99,7 @@ def draw_accuracy_plot():
     title = 'Accuracy - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
@@ -107,7 +114,7 @@ def draw_roc_auc_score_plot():
     title = 'ROC AUC score - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
 
 
@@ -123,12 +130,14 @@ def draw_fastText_plot():
     title = 'Learning curve - fastText'
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path+title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
+
 
 step = 0  # do obliczania % ukonczenia
 
 train_samples_array = []
+test_samples_array = []
 
 ft_accuracies = []
 nb_accuracies = []
@@ -164,11 +173,10 @@ for byteData in files_data.data:
     string_data.append(text)
 
 svm_clf = LinearSVC()
-dt_clf = DecisionTreeClassifier(max_depth=10)
+dt_clf = DecisionTreeClassifier()
 nb_clf = MultinomialNB()
 
 ft_clf = FastText(dim=7, min_count=15, loss='ns', epoch=200, bucket=200000, word_ngrams=1)
-
 
 for train_size in train_sizes:
     X_train, X_test, y_train, y_test = train_test_split(
@@ -182,44 +190,58 @@ for train_size in train_sizes:
     print("samples:", samples_count)
 
     train_samples_array.append(samples_count)
+    test_samples_array.append(test_samples_count)
 
-    #learning curve
-    ft_roc_auc_score, ft_acc, ft_fit_time, ft_predict_time = fastTextMethod.invoke(
-        X_train, X_test, y_train, y_test, ft_clf, iterations)
+    # prfs tests
+    ft_precision, ft_recall, ft_f1, ft_support = calc_wrapper.prfs_test(
+        'fastText - ' + korpus_name, iterations, y_test, files_data.target_names, fastTextMethod.learn_predict, (X_train, X_test, y_train, ft_clf))
 
-    nb_roc_auc_score, nb_acc, nb_fit_time, nb_predict_time = bowMethod.invoke(
-        X_train, X_test, y_train, y_test, nb_clf, iterations)
+    nb_precision, nb_recall, nb_f1, nb_support = calc_wrapper.prfs_test(
+        'NaiveBayes - ' + korpus_name, iterations, y_test, files_data.target_names, bowMethod.learn_predict, (X_train, X_test, y_train, nb_clf))
 
-    svm_roc_auc_score, svm_acc, svm_fit_time, svm_predict_time = bowMethod.invoke(
-        X_train, X_test, y_train, y_test, svm_clf, iterations)
+    svm_precision, svm_recall, svm_f1, svm_support = calc_wrapper.prfs_test(
+        'SVM - ' + korpus_name, iterations, y_test, files_data.target_names, bowMethod.learn_predict, (X_train, X_test, y_train, svm_clf))
 
-    dt_roc_auc_score, dt_acc, dt_fit_time, dt_predict_time = bowMethod.invoke(
-        X_train, X_test, y_train, y_test, dt_clf, iterations)
+    dt_precision, dt_recall, dt_f1, dt_support = calc_wrapper.prfs_test(
+        'DecisionTree - ' + korpus_name, iterations, y_test, files_data.target_names, bowMethod.learn_predict, (X_train, X_test, y_train, dt_clf))
 
-    ft_fit_times.append(ft_fit_time)
-    nb_fit_times.append(nb_fit_time)
-    svm_fit_times.append(svm_fit_time)
-    dt_fit_times.append(dt_fit_time)
+    # learning curve
+    # ft_accuracy, ft_fit_time, ft_predict_time = calc_wrapper.start_test(
+    #     iterations, y_test, fastTextMethod.learn_predict, (X_train, X_test, y_train, ft_clf))
+    #
+    # nb_accuracy, nb_fit_time, nb_predict_time = calc_wrapper.start_test(
+    #     iterations, y_test, bowMethod.learn_predict, (X_train, X_test, y_train, nb_clf))
+    #
+    # svm_accuracy, svm_fit_time, svm_predict_time = calc_wrapper.start_test(
+    #     iterations, y_test, bowMethod.learn_predict, (X_train, X_test, y_train, svm_clf))
+    #
+    # dt_accuracy, dt_fit_time, dt_predict_time = calc_wrapper.start_test(
+    #     iterations, y_test, bowMethod.learn_predict, (X_train, X_test, y_train, dt_clf))
 
-    ft_predict_times.append(ft_predict_time)
-    nb_predict_times.append(nb_predict_time)
-    svm_predict_times.append(svm_predict_time)
-    dt_predict_times.append(dt_predict_time)
+    # ft_fit_times.append(ft_fit_time)
+    # nb_fit_times.append(nb_fit_time)
+    # svm_fit_times.append(svm_fit_time)
+    # dt_fit_times.append(dt_fit_time)
 
-    ft_times.append(ft_fit_time + ft_predict_time)
-    nb_times.append(nb_fit_time + nb_predict_time)
-    svm_times.append(svm_fit_time + svm_predict_time)
-    dt_times.append(dt_fit_time + dt_predict_time)
+    # ft_predict_times.append(ft_predict_time)
+    # nb_predict_times.append(nb_predict_time)
+    # svm_predict_times.append(svm_predict_time)
+    # dt_predict_times.append(dt_predict_time)
 
-    ft_accuracies.append(ft_acc)
-    nb_accuracies.append(nb_acc)
-    svm_accuracies.append(svm_acc)
-    dt_accuracies.append(dt_acc)
+    # ft_times.append(ft_fit_time + ft_predict_time)
+    # nb_times.append(nb_fit_time + nb_predict_time)
+    # svm_times.append(svm_fit_time + svm_predict_time)
+    # dt_times.append(dt_fit_time + dt_predict_time)
 
-    ft_roc_auc_score_array.append(ft_roc_auc_score)
-    nb_roc_auc_score_array.append(nb_roc_auc_score)
-    svm_roc_auc_score_array.append(svm_roc_auc_score)
-    dt_roc_auc_score_array.append(dt_roc_auc_score)
+    # ft_accuracies.append(ft_accuracy)
+    # nb_accuracies.append(nb_accuracy)
+    # svm_accuracies.append(svm_accuracy)
+    # dt_accuracies.append(dt_accuracy)
+
+    # ft_roc_auc_score_array.append(ft_roc_auc_score)
+    # nb_roc_auc_score_array.append(nb_roc_auc_score)
+    # svm_roc_auc_score_array.append(svm_roc_auc_score)
+    # dt_roc_auc_score_array.append(dt_roc_auc_score)
 
     # draw_roc_auc_score_plot()
     # draw_accuracy_plot()
@@ -228,17 +250,16 @@ for train_size in train_sizes:
     # draw_time_plot()
 
     # confusion matrix
-    y_pred_ft, fit_time, predict_time, y_score = fastTextMethod.iter_step(X_train, X_test, y_train, ft_clf)
-    show_confusion_matrix(y_test, y_pred_ft, files_data.target_names, 'fastText')
-    y_pred_nb, fit_time, predict_time, y_score = bowMethod.iter_step(X_train, X_test, y_train, nb_clf)
-    show_confusion_matrix(y_test, y_pred_nb, files_data.target_names, 'NaiveBayes')
-
-    y_pred_svm, fit_time, predict_time, y_score = bowMethod.iter_step(X_train, X_test, y_train, svm_clf)
-    show_confusion_matrix(y_test, y_pred_svm, files_data.target_names, 'SVM')
-
-    y_pred_dt, fit_time, predict_time, y_score = bowMethod.iter_step(X_train, X_test, y_train, dt_clf)
-    show_confusion_matrix(y_test, y_pred_dt, files_data.target_names, 'DecisionTree')
+    # y_pred_ft, fit_time, predict_time, y_score = fastTextMethod.iter_step(X_train, X_test, y_train, ft_clf)
+    # show_confusion_matrix(y_test, y_pred_ft, files_data.target_names, 'fastText')
+    # y_pred_nb, fit_time, predict_time, y_score = bowMethod.iter_step(X_train, X_test, y_train, nb_clf)
+    # show_confusion_matrix(y_test, y_pred_nb, files_data.target_names, 'NaiveBayes')
+    #
+    # y_pred_svm, fit_time, predict_time, y_score = bowMethod.iter_step(X_train, X_test, y_train, svm_clf)
+    # show_confusion_matrix(y_test, y_pred_svm, files_data.target_names, 'SVM')
+    #
+    # y_pred_dt, fit_time, predict_time, y_score = bowMethod.iter_step(X_train, X_test, y_train, dt_clf)
+    # show_confusion_matrix(y_test, y_pred_dt, files_data.target_names, 'DecisionTree')
 
     step += 1
     print("Finished:", str(step / len(train_sizes)) + "%")
-
