@@ -79,8 +79,8 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
     ax.set_aspect('auto')
 
     fmt = '.2f'
-    # thresh = 0.7
-    thresh = 0.98
+    thresh = 0.7
+    # thresh = 0.98
     # thresh = matrix_data.max() / 2.
     for i in range(len(classes)):
         for j in range(len(categories)):

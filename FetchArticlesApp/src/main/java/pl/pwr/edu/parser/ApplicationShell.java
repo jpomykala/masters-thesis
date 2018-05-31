@@ -33,10 +33,11 @@ public class ApplicationShell {
 	public void startDownload(
 			@ShellOption(help = "threads", defaultValue = "1") @Min(1) Integer threads,
 			@ShellOption(help = "save path", defaultValue = "/Users/jakub/Desktop") String path,
-			@ShellOption(help = "file format: xml, json, txt", defaultValue = "xml") String format
+			@ShellOption(help = "file format: xml, json, txt", defaultValue = "xml") String format,
+			@ShellOption(help = "encoding", defaultValue = "utf8") String encoding
 	) {
 		PathResolver pathResolver = new PathBySourceResolver(path);
-		ArticleWriter articleWriter = lookupWriter(format);
+		ArticleWriter articleWriter = lookupWriter(format, encoding);
 		articleWriter.setPathResolver(pathResolver);
 		parserChain.invoke(articleWriter, threads);
 	}

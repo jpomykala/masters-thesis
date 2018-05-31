@@ -7,6 +7,10 @@ raw_wiki = "../data/wiki/raw"
 text_wiki = "../data/wiki/text"
 ccl_wiki = "../data/wiki/ccl"
 
+# raw_wiki = "../data/wiki/raw"
+# text_wiki = "../data/wiki/text"
+ccl_articles = "../data/korpus/ccl"
+
 
 # lemma_dir = "../data/korpus/lemma"
 # text_category = "../data/korpus/text"
@@ -16,7 +20,7 @@ ccl_wiki = "../data/wiki/ccl"
 
 # redistribute_to_categories_wiki(raw_wiki, categories_wiki)
 
-show_summary_plot(text_wiki, 100)
+# show_summary_plot(text_wiki, 100)
 
 
 # read files
@@ -46,8 +50,11 @@ def ccl_to_lemma():
 
 def ccl_to_lemma_nouns():
     #ccls to lemma nouns
-    ccl_data = load_files(ccl_wiki)
+    ccl_data = load_files(ccl_articles)
     files = [f for f in ccl_data.filenames]
     for input_file in files:
-        output_file = input_file.replace("data/wiki/ccl", "data/wiki/lemma", 1)
-        xml_reader.ccl_to_lemma(input_file, output_file)
+        output_file = input_file.replace("data/korpus/ccl", "data/korpus/noun", 1)
+        xml_reader.ccl_to_lemma_noun(input_file, output_file)
+
+
+ccl_to_lemma_nouns()

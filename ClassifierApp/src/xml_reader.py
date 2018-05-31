@@ -13,7 +13,6 @@ def ccl_to_lemma(input_file, output_file):
     for token in root.getiterator('tok'):
         base = token.find('lex').find('base').text
         base_words.append(base)
-        c_tag = token.find('lex').find('ctag').text
 
     output_file = output_file + ".lemma"
     content = " ".join(base_words)
@@ -26,10 +25,11 @@ def ccl_to_lemma_noun(input_file, output_file):
     base_words = []
     for token in root.getiterator('tok'):
         base = token.find('lex').find('base').text
-        base_words.append(base)
         c_tag = token.find('lex').find('ctag').text
+        if 'subst' in c_tag:
+            base_words.append(base)
 
-    output_file = output_file + ".lemma"
+    output_file = output_file + ".noun"
     content = " ".join(base_words)
     save_text(output_file, content)
 
