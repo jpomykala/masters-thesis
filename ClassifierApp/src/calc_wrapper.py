@@ -23,10 +23,10 @@ def start_test(iterations, y_test, clf_function, args):
     mean_accuracy = accuracy_acc / iterations
     mean_roc_auc_acc = roc_auc_acc / iterations
 
-    return mean_accuracy, mean_fit_time, mean_predict_time
+    return mean_accuracy, mean_fit_time, mean_predict_time, mean_roc_auc_acc
 
 
-def prfs_test(title, iterations, y_test, labels, clf_function, args):
+def report_data(title, iterations, y_test, labels, clf_function, args):
     precision_acc = 0
     recall_acc = 0
     f1_acc = 0
@@ -79,8 +79,11 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
     ax.set_aspect('auto')
 
     fmt = '.2f'
-    thresh = 0.7
-    # thresh = 0.98
+    if len(classes) > 10:
+        thresh = 0.98
+    else:
+        thresh = 0.7
+
     # thresh = matrix_data.max() / 2.
     for i in range(len(classes)):
         for j in range(len(categories)):
@@ -89,8 +92,5 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
 
     ax.set_title(title)
     fig.tight_layout()
-    plt.savefig(plot_save_path + title + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + 'report-' + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
     plt.show()
-
-
-
