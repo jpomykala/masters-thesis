@@ -68,7 +68,7 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
     categories = ['precision', 'recall', 'f1-score']
 
     fig, ax = plt.subplots()
-    im = ax.imshow(matrix_data, interpolation='nearest', cmap=plt.cm.Blues)
+    im = ax.imshow(matrix_data, interpolation='nearest', cmap=plt.cm.coolwarm_r, vmin=0, vmax=1)
 
     ax.set_xticks(np.arange(len(categories)))
     ax.set_yticks(np.arange(len(classes)))
@@ -79,16 +79,13 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
     ax.set_aspect('auto')
 
     fmt = '.2f'
-    if len(classes) > 10:
-        thresh = 0.98
-    else:
-        thresh = 0.7
+    tresh_low = 0.4
+    tresh_high = 0.6
 
-    # thresh = matrix_data.max() / 2.
     for i in range(len(classes)):
         for j in range(len(categories)):
             text = ax.text(j, i, format(matrix_data[i, j], fmt),
-                           ha="center", va="center", color="white" if matrix_data[i, j] > thresh else "black")
+                           ha="center", va="center", color="black" if tresh_low < matrix_data[i, j] < tresh_high else "white")
 
     ax.set_title(title)
     fig.tight_layout()
