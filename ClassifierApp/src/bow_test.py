@@ -23,7 +23,7 @@ svm_clf = LinearSVC()
 dt_clf = DecisionTreeClassifier()
 nb_clf = MultinomialNB()
 
-stop_words_list = read_stop_words_list("../data/stop_words/list.txt")
+stop_words_list = read_stop_words_list()
 vectorizer_word_1 = TfidfVectorizer(stop_words=stop_words_list)
 vectorizer_word_2 = TfidfVectorizer(stop_words=stop_words_list, ngram_range=(2, 2))
 vectorizer_word_3 = TfidfVectorizer(stop_words=stop_words_list, ngram_range=(3, 3))

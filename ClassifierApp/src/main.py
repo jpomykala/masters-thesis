@@ -28,7 +28,7 @@ dt_clf = DecisionTreeClassifier()
 nb_clf = MultinomialNB()
 ft_clf = FastText(dim=7, min_count=15, loss='ns', epoch=200, bucket=200000, word_ngrams=1)
 
-stop_words_list = read_stop_words_list("../data/stop_words/list.txt")
+stop_words_list = read_stop_words_list()
 d_vectorizer = TfidfVectorizer(stop_words=stop_words_list)
 
 

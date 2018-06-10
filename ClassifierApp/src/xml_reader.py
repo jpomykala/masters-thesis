@@ -3,6 +3,8 @@ import collections
 import glob2
 from xml.etree import ElementTree
 from random import shuffle
+
+from src.consts import stop_words_list_path
 from src.utils import save_text
 
 
@@ -51,8 +53,8 @@ def ccl_to_lemma_noun(input_file, output_file):
     save_text(output_file, content)
 
 
-def read_stop_words_list(path):
-    full_path = os.path.abspath(path)
+def read_stop_words_list():
+    full_path = os.path.abspath(stop_words_list_path)
     output = list(open(full_path, encoding="utf-8"))
     return [l.replace('\n', '') for l in output]
 
