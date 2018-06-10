@@ -142,7 +142,7 @@ def summarize_plot_words(path):
     values = list(corpus_summary_filtered.values())
     plt.barh(y_pos, values, align='center', alpha=0.5)
     plt.yticks(y_pos, labels)
-    plt.xlabel('Średnia ilość lematów')
+    plt.xlabel('Średnia liczba lematów')
     plt.show()
     return output
 

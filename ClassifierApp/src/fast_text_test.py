@@ -46,8 +46,8 @@ def draw_epoch_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_epoch_result_4, 'm-h', label="epoch = 100")
     plt.plot(ax_samples, ft_epoch_result_5, 'c-+', label="epoch = 200")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
     title = 'fastText - epoch - ' + korpus_name
     plt.title(title)
     plt.legend()
@@ -60,8 +60,8 @@ def draw_ngram_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_ngram_result_2, 'g-^', label="ngram = 2")
     plt.plot(ax_samples, ft_ngram_result_3, 'b-s', label="ngram = 3")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
     title = 'fastText - ngram - ' + korpus_name
     plt.title(title)
     plt.legend()
@@ -76,8 +76,8 @@ def draw_min_count_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_min_count_result_4, 'm-h', label="min_count = 20")
     plt.plot(ax_samples, ft_min_count_result_5, 'c-+', label="min_count = 100")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
     title = 'fastText - min_count - ' + korpus_name
     plt.title(title)
     plt.legend()
@@ -90,8 +90,8 @@ def draw_loss_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_loss_result_2, 'g-^', label="loss = hs")
     plt.plot(ax_samples, ft_loss_result_3, 'b-s', label="loss = softmax")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
     title = 'fastText - loss - ' + korpus_name
     plt.title(title)
     plt.legend()
@@ -202,16 +202,16 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf):
 
 
 def start_tests():
-    iterations_wiki = 2
-    iterations_articles = 2
+    iterations_wiki = 10
+    iterations_articles = 10
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
     data_sets = [
         ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
-        # ('Articles', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
-        ('Wikipedia (nouns)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
-        # ('Articles (nouns)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
+        ('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
+        ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
+        ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
     ]
 
     for korpus_name, korpus_path, iter_size, train_size in data_sets:

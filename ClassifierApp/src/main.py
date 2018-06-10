@@ -39,7 +39,7 @@ def show_support_matrix(korpus_name, target_names, ft_support, nb_support, svm_s
     shape = (len(classes), 4)
     matrix_data = data.reshape(shape)
 
-    categories = ['fastText', 'NaiveBayes', 'SVM', 'DecisionTree']
+    categories = ['fastText', 'NaiveBayes', 'SVM', 'Drzewo decyzyjne']
 
     fig, ax = plt.subplots()
     im = ax.imshow(matrix_data)
@@ -80,11 +80,11 @@ def draw_fit_time_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_fit_times, 'c-+', label="FastText")
     plt.plot(ax_samples, nb_fit_times, 'r-*', label="NaiveBayes")
     plt.plot(ax_samples, svm_fit_times, 'g-^', label="SVM")
-    plt.plot(ax_samples, dt_fit_times, 'b-s', label="Decision Tree")
+    plt.plot(ax_samples, dt_fit_times, 'b-s', label="Drzewo decyzyjne")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('time [s]')
-    plt.xlabel('number of examples')
-    title = 'Fit time - ' + korpus_name
+    plt.ylabel('czas [s]')
+    plt.xlabel('liczba próbek')
+    title = 'Czas nauki - ' + korpus_name
     plt.title(title)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
@@ -97,9 +97,9 @@ def draw_predict_time_plot(ax_samples, korpus_name):
     plt.plot(list(reversed(ax_samples)), list(reversed(svm_predict_times)), 'g-^', label="SVM")
     plt.plot(list(reversed(ax_samples)), list(reversed(dt_predict_times)), 'b-s', label="Decision Tree")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('time [s]')
-    plt.xlabel('number of examples')
-    title = 'Predict time - ' + korpus_name
+    plt.ylabel('czas [s]')
+    plt.xlabel('liczba próbek')
+    title = 'Czas klasyfikacji - ' + korpus_name
     plt.title(title)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
@@ -110,11 +110,11 @@ def draw_time_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_times, 'c-+', label="FastText")
     plt.plot(ax_samples, nb_times, 'r-*', label="NaiveBayes")
     plt.plot(ax_samples, svm_times, 'g-^', label="SVM")
-    plt.plot(ax_samples, dt_times, 'b-s', label="Decision Tree")
+    plt.plot(ax_samples, dt_times, 'b-s', label="Drzewo decyzyjne")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('time [s]')
-    plt.xlabel('number of examples')
-    title = 'Total work time - ' + korpus_name
+    plt.ylabel('czas [s]')
+    plt.xlabel('liczba próbek')
+    title = 'Całkowity czas pracy - ' + korpus_name
     plt.title(title)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
@@ -125,11 +125,11 @@ def draw_accuracy_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, ft_accuracies, 'c-+', label="FastText")
     plt.plot(ax_samples, nb_accuracies, 'r-*', label="NaiveBayes")
     plt.plot(ax_samples, svm_accuracies, 'g-^', label="SVM")
-    plt.plot(ax_samples, dt_accuracies, 'b-s', label="Decision Tree")
+    plt.plot(ax_samples, dt_accuracies, 'b-s', label="Drzewo decyzyjne")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
-    title = 'Accuracy - ' + korpus_name
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
+    title = 'Dokładność - ' + korpus_name
     plt.title(title)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
@@ -143,8 +143,8 @@ def draw_fastText_plot(ax_samples, title):
     plt.plot(ax_samples, fastText_accuracies_4, 'm-h', label="epoch = 500")
     plt.plot(ax_samples, fastText_accuracies_5, 'c-+', label="epoch = 1000")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
     plt.title(title)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
@@ -156,9 +156,9 @@ def draw_bow_plot(ax_samples, korpus_name):
     plt.plot(ax_samples, bow_2, 'g-^', label="ngram = 6")
     plt.plot(ax_samples, bow_3, 'b-s', label="ngram = 7")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
-    plt.ylabel('accuracy')
-    plt.xlabel('number of examples')
-    title = 'BoW - TFIDF - ' + korpus_name + ' - character n-gram'
+    plt.ylabel('dokładność')
+    plt.xlabel('liczba próbek')
+    title = 'Bag-Of-Words - tfidf - ' + korpus_name + ' - znaki - n-gram'
     plt.title(title)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
@@ -299,7 +299,7 @@ def cls_report(korpus_path, korpus_name):
         'SVM - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
         (X_train, X_test, y_train, svm_clf, d_vectorizer))
     calc_wrapper.report_data(
-        'DecisionTree - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
+        'Drzewo decyzyjne - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
         (X_train, X_test, y_train, dt_clf, d_vectorizer))
 
     # confusion matrix
@@ -314,7 +314,7 @@ def cls_report(korpus_path, korpus_name):
     show_confusion_matrix(y_test, y_pred_svm, target_names, 'SVM', korpus_name)
 
     y_pred_dt, fit_time, predict_time, y_score = bowMethod.learn_predict(X_train, X_test, y_train, dt_clf, d_vectorizer)
-    show_confusion_matrix(y_test, y_pred_dt, target_names, 'DecisionTree', korpus_name)
+    show_confusion_matrix(y_test, y_pred_dt, target_names, 'Drzewo decyzyjne', korpus_name)
 
 
 def load_string_korpus(korpus_path, train_size):
@@ -334,10 +334,10 @@ def start_tests():
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
     data_sets = [
-        # ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
-        ('Articles', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
-        # ('Wikipedia (nouns)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
-        # ('Articles (nouns)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
+        ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
+        ('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
+        ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
+        ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
     ]
 
     for korpus_name, korpus_path, iter_size, train_size in data_sets:

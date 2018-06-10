@@ -32,5 +32,5 @@ def plot_confusion_matrix(cm, classes, title, cmap=plt.cm.Blues):
                      color="white" if cm[i, j] > thresh else "black")
 
     plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
+    plt.ylabel('Rzeczywista klasa')
+    plt.xlabel('Dopasowana klasa ')

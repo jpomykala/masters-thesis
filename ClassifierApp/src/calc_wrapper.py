@@ -58,14 +58,14 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
     rows = zip(target_names, p, r, f1, s)
 
     classes = [x[0] for x in rows]
-    classes.append('average')
+    classes.append('średnia')
     data = np.array([p, r, f1])
     data = np.transpose(data)
 
     shape = (len(classes), 3)
     matrix_data = data.reshape(shape)
 
-    categories = ['precision', 'recall', 'f1-score']
+    categories = ['precyzja', 'czułość', 'miara f1']
 
     fig, ax = plt.subplots()
     im = ax.imshow(matrix_data, interpolation='nearest', cmap=plt.cm.coolwarm_r, vmin=0, vmax=1)

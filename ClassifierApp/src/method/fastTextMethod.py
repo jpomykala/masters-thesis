@@ -40,10 +40,4 @@ def learn_predict(X_train, X_test, y_train, clf):
             tmp_arr.append(int(p))
 
     y_pred = np.asarray(tmp_arr, dtype=np.int64)
-
-    # y_score = pipeline.decision_function(data_test_tuple)
-    y_score = 0
-
-    return y_pred, fit_time, predict_time, y_score
-
-
+    return y_pred, fit_time, predict_time
