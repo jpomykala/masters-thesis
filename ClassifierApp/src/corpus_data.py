@@ -1,11 +1,15 @@
 import os
 import pathlib
 import shutil
+from collections import OrderedDict, Counter
+from xml.etree import ElementTree
 
 import glob2
 import matplotlib.pyplot as plt
 import numpy as np
 from string import digits
+
+from src.consts import plot_save_path, plotFormat, dpi
 
 
 def show_summary_plot(path, filter_less_than=0):
@@ -20,6 +24,101 @@ def show_summary_plot(path, filter_less_than=0):
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba dokumentów')
     plt.show()
+
+
+def show_classes_summary_plot(path, title):
+    path = end_path_with_slash(path)
+
+    all_in_path = glob2.glob(path + '/**/*.*')
+    output = {}
+    for path in all_in_path:
+        file_count = count_classes_for_file(path)
+        output = {k: output.get(k, 0) + file_count.get(k, 0) for k in set(output) | set(file_count)}
+
+    output = {k: v for k, v in output.items() if v > 30000}
+
+    output = OrderedDict(sorted(output.items(), key=lambda kv: kv[1]))
+
+    ignCount = output['ign']
+    allCount = sum(output.values()) - ignCount
+
+    result = ignCount / allCount
+    print(result * 100)
+
+
+    plt.gcf().subplots_adjust(left=0.24)
+    labels = tuple(output.keys())
+    y_pos = np.arange(len(labels))
+    values = list(output.values())
+    plt.barh(y_pos, values, align='center', alpha=0.5)
+    plt.title(title)
+    plt.yticks(y_pos, labels)
+    plt.xlabel('Liczba wystąpień')
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
+    plt.show()
+
+
+def summary_all_ign_words(path, title, filter=50):
+    path = end_path_with_slash(path)
+
+    all_in_path = glob2.glob(path + '/**/*.*')
+    output = []
+    for path in all_in_path:
+        ign_words = get_all_ign(path)
+        output = output + ign_words
+
+    output = Counter(output)
+    output = {k: v for k, v in output.items() if v > filter}
+    output = OrderedDict(sorted(output.items(), key=lambda kv: kv[1]))
+
+    plt.gcf().subplots_adjust(left=0.24)
+    labels = tuple(output.keys())
+    y_pos = np.arange(len(labels))
+    values = list(output.values())
+    plt.barh(y_pos, values, align='center', alpha=0.5)
+    plt.title(title)
+    plt.yticks(y_pos, labels)
+    plt.xlabel('Liczba wystąpień')
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
+    plt.show()
+
+
+def get_all_ign(input_file):
+    tree = ElementTree.parse(input_file)
+    root = tree.getroot()
+    output = []
+    for token in root.getiterator('tok'):
+        c_tag = token.find('lex').find('ctag').text
+        base = token.find('lex').find('base').text
+        tags_array = c_tag.split(":")
+        for tag in tags_array:
+            if 'ign' in tag:
+                output.append(base.lower())
+    return output
+
+
+def count_classes_for_file(input_file):
+    tree = ElementTree.parse(input_file)
+    root = tree.getroot()
+    output = {}
+    for token in root.getiterator('tok'):
+        c_tag = token.find('lex').find('ctag').text
+        base = token.find('lex').find('base').text
+        tags_array = c_tag.split(":")
+        for tag in tags_array:
+            if tag in output:
+                output[tag] = output[tag] + 1
+            else:
+                output[tag] = 1
+
+            if 'ign' in tag:
+                print(base)
+
+    if 'ign' in output:
+        output['ign'] = output['ign'] * 4
+    return output
 
 
 def end_path_with_slash(path):

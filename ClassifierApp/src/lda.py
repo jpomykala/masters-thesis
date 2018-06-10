@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from src.xml_reader import read_stop_words_list
 
 lemma_dir = "../data/korpus/lemma"
+# lemma_dir = "../data/wiki/lemma"
 lemma_data = load_files(lemma_dir)
 
 string_data = []

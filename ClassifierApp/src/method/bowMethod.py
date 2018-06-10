@@ -6,11 +6,9 @@ from sklearn.pipeline import Pipeline
 from src.xml_reader import read_stop_words_list
 
 
-def learn_predict(X_train, X_test, y_train, clf):
-    stop_words_list = read_stop_words_list("../data/stop_words/list.txt")
-    tfidf_vectorizer = TfidfVectorizer(stop_words=stop_words_list)
+def learn_predict(X_train, X_test, y_train, clf, vect):
     pipeline = Pipeline([
-        ('vect', tfidf_vectorizer),
+        ('vect', vect),
         ('clf', clf)])
 
     start = time.time()

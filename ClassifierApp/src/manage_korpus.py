@@ -1,15 +1,19 @@
 from sklearn.datasets import load_files
 
 from src import xml_reader, clarin_api
-from src.corpus_data import show_summary_plot
+from src.corpus_data import show_summary_plot, show_classes_summary_plot, summary_all_ign_words
 
 raw_wiki = "../data/wiki/raw"
 text_wiki = "../data/wiki/text"
 ccl_wiki = "../data/wiki/ccl"
+lemma_wiki = "../data/wiki/lemma"
+noun_wiki = "../data/wiki/noun"
 
 # raw_wiki = "../data/wiki/raw"
 # text_wiki = "../data/wiki/text"
 ccl_articles = "../data/korpus/ccl"
+lemma_articles = "../data/korpus/lemma"
+noun_articles = "../data/korpus/noun"
 
 
 # lemma_dir = "../data/korpus/lemma"
@@ -21,7 +25,13 @@ ccl_articles = "../data/korpus/ccl"
 # redistribute_to_categories_wiki(raw_wiki, categories_wiki)
 
 # show_summary_plot(text_wiki, 100)
+# show_classes_summary_plot(ccl_wiki, 'Wikipedia - tag summary')
+# show_classes_summary_plot(ccl_articles, 'Articles - tag summary')
+# summary_all_ign_words(ccl_articles, 'Articles - unknown summary', filter=80)
+# summary_all_ign_words(ccl_wiki, 'Wikipedia - unknown summary', filter=200)
 
+summary_size()
+print("koniec")
 
 # read files
 # files = xml_reader.read_files_from_dir(path=raw_files, max_per_dir=800)
@@ -57,4 +67,4 @@ def ccl_to_lemma_nouns():
         xml_reader.ccl_to_lemma_noun(input_file, output_file)
 
 
-ccl_to_lemma_nouns()
+# ccl_to_lemma_nouns()
