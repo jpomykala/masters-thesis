@@ -1,3 +1,4 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
@@ -83,9 +84,11 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
     for i in range(len(classes)):
         for j in range(len(categories)):
             text = ax.text(j, i, format(matrix_data[i, j], fmt),
-                           ha="center", va="center", color="black" if tresh_low < matrix_data[i, j] < tresh_high else "white")
+                           ha="center", va="center",
+                           color="black" if tresh_low < matrix_data[i, j] < tresh_high else "white")
 
     ax.set_title(title)
     fig.tight_layout()
-    plt.savefig(plot_save_path + 'report-' + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + 'report-' + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()

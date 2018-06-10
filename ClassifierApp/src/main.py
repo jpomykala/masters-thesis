@@ -1,3 +1,5 @@
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
 from shallowlearn.models import FastText
@@ -8,6 +10,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
+
+module_path = os.path.abspath(os.getcwd()).replace('/src', '')
+
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 from src import calc_wrapper
 from src.confusion import plot_confusion_matrix
@@ -31,7 +38,8 @@ def show_confusion_matrix(y_test, y_pred, class_names, title, korpus_name):
     title = title + ' - ' + korpus_name
     plot_confusion_matrix(cnf_matrix, classes=class_names, title=title)
     title = title.lower()
-    plt.savefig(plot_save_path + 'c-matrix-' + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path + 'c-matrix-' + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat,
+                dpi=dpi,
                 format=plotFormat, bbox_inches='tight')
     plt.show()
 
@@ -47,7 +55,8 @@ def draw_fit_time_plot(ax_samples, korpus_name):
     title = 'Czas nauki - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -62,7 +71,8 @@ def draw_predict_time_plot(ax_samples, korpus_name):
     title = 'Czas klasyfikacji - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -77,7 +87,8 @@ def draw_time_plot(ax_samples, korpus_name):
     title = 'Całkowity czas pracy - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -92,7 +103,8 @@ def draw_accuracy_plot(ax_samples, korpus_name):
     title = 'Dokładność - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -203,7 +215,7 @@ def cls_report(korpus_path, korpus_name):
     show_confusion_matrix(y_test, y_pred_nb, target_names, 'NaiveBayes', korpus_name)
 
     y_pred_svm, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, svm_clf,
-                                                                          d_vectorizer)
+                                                                 d_vectorizer)
     show_confusion_matrix(y_test, y_pred_svm, target_names, 'SVM', korpus_name)
 
     y_pred_dt, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, dt_clf, d_vectorizer)

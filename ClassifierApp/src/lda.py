@@ -1,4 +1,3 @@
-# from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_files
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer

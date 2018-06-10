@@ -1,20 +1,19 @@
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
 from shallowlearn.models import FastText
 from sklearn.datasets import load_files
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.svm import LinearSVC
-from sklearn.tree import DecisionTreeClassifier
+
+module_path = os.path.abspath(os.getcwd()).replace('/src', '')
+
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 from src import calc_wrapper
-from src.confusion import plot_confusion_matrix
 from src.consts import plotFormat, dpi, plot_save_path
-from src.method import bowMethod
 from src.method import fastTextMethod
-from src.xml_reader import read_stop_words_list
 
 n_classes = 34
 
@@ -51,7 +50,8 @@ def draw_epoch_plot(ax_samples, korpus_name):
     title = 'fastText - epoch - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -65,7 +65,8 @@ def draw_ngram_plot(ax_samples, korpus_name):
     title = 'fastText - ngram - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -81,7 +82,8 @@ def draw_min_count_plot(ax_samples, korpus_name):
     title = 'fastText - min_count - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -95,7 +97,8 @@ def draw_loss_plot(ax_samples, korpus_name):
     title = 'fastText - loss - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -141,7 +144,7 @@ def accuracy_time_report(train_sizes, iterations, korpus_path, korpus_name):
 
         print('Calculating... train:', str(train_samples_count), '| test:', str(test_samples_count))
 
-        #ngram
+        # ngram
         ft_ngram_1 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_ngram_clf_1)
         ft_ngram_2 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_ngram_clf_2)
         ft_ngram_3 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_ngram_clf_3)
@@ -150,7 +153,7 @@ def accuracy_time_report(train_sizes, iterations, korpus_path, korpus_name):
         ft_ngram_result_2.append(ft_ngram_2)
         ft_ngram_result_3.append(ft_ngram_3)
 
-        #epoch
+        # epoch
         ft_epoch_1 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_epoch_clf_1)
         ft_epoch_2 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_epoch_clf_2)
         ft_epoch_3 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_epoch_clf_3)
@@ -162,8 +165,8 @@ def accuracy_time_report(train_sizes, iterations, korpus_path, korpus_name):
         ft_epoch_result_3.append(ft_epoch_3)
         ft_epoch_result_4.append(ft_epoch_4)
         ft_epoch_result_5.append(ft_epoch_5)
-        
-        #mincount
+
+        # mincount
         ft_min_count_1 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_min_count_clf_1)
         ft_min_count_2 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_min_count_clf_2)
         ft_min_count_3 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_min_count_clf_3)
@@ -175,8 +178,8 @@ def accuracy_time_report(train_sizes, iterations, korpus_path, korpus_name):
         ft_min_count_result_3.append(ft_min_count_3)
         ft_min_count_result_4.append(ft_min_count_4)
         ft_min_count_result_5.append(ft_min_count_5)
-        
-        #hs
+
+        # hs
         ft_loss_1 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_loss_clf_1)
         ft_loss_2 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_loss_clf_2)
         ft_loss_3 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, ft_loss_clf_3)

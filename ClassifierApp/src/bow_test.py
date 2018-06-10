@@ -1,19 +1,22 @@
+import os
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
-from shallowlearn.models import FastText
 from sklearn.datasets import load_files
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
+module_path = os.path.abspath(os.getcwd()).replace('/src', '')
+
+if module_path not in sys.path:
+    sys.path.append(module_path)
 from src import calc_wrapper
-from src.confusion import plot_confusion_matrix
 from src.consts import plotFormat, dpi, plot_save_path
 from src.method import bowMethod
-from src.method import fastTextMethod
 from src.xml_reader import read_stop_words_list
 
 svm_clf = LinearSVC()
@@ -40,7 +43,8 @@ def draw_bow_word_plot(ax_samples, korpus_name):
     title = 'Bag-Of-Words - tfidf - ' + korpus_name + ' - słowa - n-gram'
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -54,7 +58,8 @@ def draw_bow_char_plot(ax_samples, korpus_name):
     title = 'Bag-Of-Words - tfidf - ' + korpus_name + ' - znaki - n-gram'
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi, format=plotFormat)
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
@@ -86,7 +91,7 @@ def test_bow(train_sizes, iterations, korpus_path, korpus_name):
 
         print('Calculating... train:', str(train_samples_count), '| test:', str(test_samples_count))
 
-        #word
+        # word
         nb_accuracy_word_1 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, nb_clf, vectorizer_word_1)
         nb_accuracy_word_2 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, nb_clf, vectorizer_word_2)
         nb_accuracy_word_3 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, nb_clf, vectorizer_word_3)
@@ -102,9 +107,8 @@ def test_bow(train_sizes, iterations, korpus_path, korpus_name):
         bow_word_1.append((nb_accuracy_word_1 + svm_accuracy_word_1 + dt_accuracy_word_1) / 3)
         bow_word_2.append((nb_accuracy_word_2 + svm_accuracy_word_2 + dt_accuracy_word_2) / 3)
         bow_word_3.append((nb_accuracy_word_3 + svm_accuracy_word_3 + dt_accuracy_word_3) / 3)
-        
-        
-        #word
+
+        # word
         nb_accuracy_char_1 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, nb_clf, vectorizer_char_1)
         nb_accuracy_char_2 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, nb_clf, vectorizer_char_2)
         nb_accuracy_char_3 = simple_wrapper(X_test, X_train, iterations, y_test, y_train, nb_clf, vectorizer_char_3)
@@ -136,8 +140,8 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf, vect):
 
 
 def start_tests():
-    iterations_wiki = 5
-    iterations_articles = 5
+    iterations_wiki = 1
+    iterations_articles = 1
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
