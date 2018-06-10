@@ -16,6 +16,8 @@ from src import calc_wrapper
 from src.consts import plotFormat, dpi, plot_save_path
 from src.method import fastTextMethod
 
+n_classes = 34
+
 ft_ngram_clf_1 = FastText(dim=n_classes, min_count=15, loss='ns', epoch=100, bucket=200000, word_ngrams=1)
 ft_ngram_clf_2 = FastText(dim=n_classes, min_count=15, loss='ns', epoch=100, bucket=200000, word_ngrams=2)
 ft_ngram_clf_3 = FastText(dim=n_classes, min_count=15, loss='ns', epoch=100, bucket=200000, word_ngrams=3)
@@ -204,25 +206,34 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf):
 
 
 def start_tests():
-    iterations_wiki = 1
-    iterations_articles = 1
+    iterations_wiki = 5
+    iterations_articles = 5
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
-    data_sets = [
-        ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
-        ('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
-        ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
-        ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
-    ]
+    wiki_data_sets = [('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
+                      ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki)]
+
+    article_data_sets = [('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
+                         ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles)]
+
+    data_sets = []
+
+    argument_data_set = sys.argv[1:]
+    if 'w' in argument_data_set:
+        print("loading Wikipedia data set only")
+        data_sets = wiki_data_sets
+
+    if 'a' in argument_data_set:
+        print("loading Articles data set only")
+        data_sets = article_data_sets
+
+    if len(sys.argv) < 2:
+        print("loading full data set")
+        data_sets = wiki_data_sets + article_data_sets
 
     for korpus_name, korpus_path, iter_size, train_size in data_sets:
         print('Korpus name: %s' % korpus_name)
-        global n_classes
-        if 'Wikipedia' in korpus_name:
-            n_classes = 34
-        else:
-            n_classes = 7
         accuracy_time_report(train_size, iter_size, korpus_path, korpus_name)
 
 

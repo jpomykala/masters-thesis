@@ -140,17 +140,31 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf, vect):
 
 
 def start_tests():
-    iterations_wiki = 3
-    iterations_articles = 3
+    iterations_wiki = 5
+    iterations_articles = 5
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
-    data_sets = [
-        ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
-        # ('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
-        ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
-        # ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
-    ]
+    wiki_data_sets = [('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
+                      ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki)]
+
+    article_data_sets = [('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
+                         ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles)]
+
+    data_sets = []
+
+    argument_data_set = sys.argv[1:]
+    if 'w' in argument_data_set:
+        print("loading Wikipedia data set only")
+        data_sets = wiki_data_sets
+
+    if 'a' in argument_data_set:
+        print("loading Articles data set only")
+        data_sets = article_data_sets
+
+    if len(sys.argv) < 2:
+        print("loading full data set")
+        data_sets = wiki_data_sets + article_data_sets
 
     for korpus_name, korpus_path, iter_size, train_size in data_sets:
         print('Korpus name: %s' % korpus_name)
