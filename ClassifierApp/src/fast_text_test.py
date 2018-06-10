@@ -196,7 +196,7 @@ def accuracy_time_report(train_sizes, iterations, korpus_path, korpus_name):
 
 
 def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf):
-    ft_accuracy, ft_fit_time, ft_predict_time, ft_roc_auc = calc_wrapper.start_test(
+    ft_accuracy, ft_fit_time, ft_predict_time = calc_wrapper.start_test(
         iterations, y_test, fastTextMethod.learn_predict, (X_train, X_test, y_train, clf))
     return ft_accuracy
 

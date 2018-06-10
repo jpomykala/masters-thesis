@@ -10,10 +10,9 @@ def start_test(iterations, y_test, clf_function, args):
     fit_time_acc = 0
     predict_time_acc = 0
     accuracy_acc = 0
-    roc_auc_acc = 0
 
     for iter_index in range(0, iterations):
-        y_pred, fit_time, predict_time, y_score = clf_function(*args)
+        y_pred, fit_time, predict_time = clf_function(*args)
         fit_time_acc += fit_time
         predict_time_acc += predict_time
         accuracy_acc += accuracy_score(y_test, y_pred)
@@ -21,9 +20,8 @@ def start_test(iterations, y_test, clf_function, args):
     mean_fit_time = fit_time_acc / iterations
     mean_predict_time = predict_time_acc / iterations
     mean_accuracy = accuracy_acc / iterations
-    mean_roc_auc_acc = roc_auc_acc / iterations
 
-    return mean_accuracy, mean_fit_time, mean_predict_time, mean_roc_auc_acc
+    return mean_accuracy, mean_fit_time, mean_predict_time
 
 
 def report_data(title, iterations, y_test, labels, clf_function, args):
