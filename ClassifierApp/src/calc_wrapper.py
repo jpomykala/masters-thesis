@@ -1,4 +1,3 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
@@ -32,7 +31,7 @@ def report_data(title, iterations, y_test, labels, clf_function, args):
     support_acc = 0
 
     for iter_index in range(0, iterations):
-        y_pred, fit_time, predict_time, y_score = clf_function(*args)
+        y_pred, fit_time, predict_time = clf_function(*args)
         clf_report_plot(title, y_test, y_pred, target_names=labels)
         print(classification_report(y_test, y_pred, target_names=labels))
 
@@ -89,6 +88,8 @@ def clf_report_plot(title, y_true, y_pred, target_names=None, sample_weight=None
 
     ax.set_title(title)
     fig.tight_layout()
-    plt.savefig(plot_save_path + 'report-' + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path + 'report-' +
+                title.lower().replace(' ', '-').encode("ascii", errors="ignore").decode() +
+                "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()

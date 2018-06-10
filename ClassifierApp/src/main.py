@@ -33,13 +33,13 @@ stop_words_list = read_stop_words_list()
 d_vectorizer = TfidfVectorizer(stop_words=stop_words_list)
 
 
-def show_confusion_matrix(y_test, y_pred, class_names, title, korpus_name):
+def show_confusion_matrix(y_test, y_pred, class_names, file_name, title, korpus_name):
     cnf_matrix = confusion_matrix(y_test, y_pred)
     plt.figure()
     title = title + ' - ' + korpus_name
     plot_confusion_matrix(cnf_matrix, classes=class_names, title=title)
-    title = title.lower()
-    plt.savefig(plot_save_path + 'c-matrix-' + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat,
+    file_name = file_name + '-' + korpus_name
+    plt.savefig(plot_save_path + 'c-matrix-' + file_name.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat,
                 dpi=dpi,
                 format=plotFormat, bbox_inches='tight')
     plt.show()
@@ -56,7 +56,9 @@ def draw_fit_time_plot(ax_samples, korpus_name):
     title = 'Czas nauki - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path +
+                'fit-time-' +
+                korpus_name.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
 
@@ -72,7 +74,9 @@ def draw_predict_time_plot(ax_samples, korpus_name):
     title = 'Czas klasyfikacji - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path +
+                'predict-time-' +
+                korpus_name.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
 
@@ -88,7 +92,10 @@ def draw_time_plot(ax_samples, korpus_name):
     title = 'Całkowity czas pracy - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path + 'total-work-time-' +
+                korpus_name.lower().replace(' ', '-').replace('ł',
+                                                              'l') + "." + plotFormat,
+                dpi=dpi,
                 format=plotFormat)
     plt.show()
 
@@ -104,7 +111,10 @@ def draw_accuracy_plot(ax_samples, korpus_name):
     title = 'Dokładność - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l').replace('ś', 's').replace('c', 'c') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path + 'accuracy-' +
+                korpus_name.lower().replace(' ', '-').encode("ascii", errors="ignore").decode()
+                + "." + plotFormat,
+                dpi=dpi,
                 format=plotFormat)
     plt.show()
 
@@ -210,17 +220,17 @@ def cls_report(korpus_path, korpus_name):
 
     # confusion matrix
     y_pred_ft, fit_time, predict_time = fastTextMethod.learn_predict(X_train, X_test, y_train, ft_clf)
-    show_confusion_matrix(y_test, y_pred_ft, target_names, 'fastText', korpus_name)
+    show_confusion_matrix(y_test, y_pred_ft, target_names, 'fasttext', 'fastText', korpus_name)
 
     y_pred_nb, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, nb_clf, d_vectorizer)
-    show_confusion_matrix(y_test, y_pred_nb, target_names, 'NaiveBayes', korpus_name)
+    show_confusion_matrix(y_test, y_pred_nb, target_names, 'naivebayes', 'NaiveBayes', korpus_name)
 
     y_pred_svm, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, svm_clf,
                                                                  d_vectorizer)
-    show_confusion_matrix(y_test, y_pred_svm, target_names, 'SVM', korpus_name)
+    show_confusion_matrix(y_test, y_pred_svm, target_names, 'svm', 'SVM', korpus_name)
 
     y_pred_dt, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, dt_clf, d_vectorizer)
-    show_confusion_matrix(y_test, y_pred_dt, target_names, 'Drzewo decyzyjne', korpus_name)
+    show_confusion_matrix(y_test, y_pred_dt, target_names, 'decisiontree', 'Drzewo decyzyjne', korpus_name)
 
 
 def load_string_korpus(korpus_path, train_size):
@@ -234,14 +244,14 @@ def load_string_korpus(korpus_path, train_size):
 
 
 def start_tests():
-    iterations_wiki = 1
-    iterations_articles = 1
+    iterations_wiki = 5
+    iterations_articles = 5
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
     data_sets = [
-        ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
-        ('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
+        # ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
+        # ('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
         # ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
         # ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles),
     ]
