@@ -54,8 +54,7 @@ def ccl_to_lemma_noun(input_file, output_file):
 
 
 def read_stop_words_list():
-    full_path = os.path.abspath(stop_words_list_path)
-    output = list(open(full_path, encoding="utf-8"))
+    output = list(open(stop_words_list_path, encoding="utf-8"))
     return [l.replace('\n', '') for l in output]
 
 
