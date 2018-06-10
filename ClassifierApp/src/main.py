@@ -104,7 +104,7 @@ def draw_accuracy_plot(ax_samples, korpus_name):
     title = 'Dokładność - ' + korpus_name
     plt.title(title)
     plt.legend()
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l').replace('ś', 's').replace('c', 'c') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
 
@@ -234,8 +234,8 @@ def load_string_korpus(korpus_path, train_size):
 
 
 def start_tests():
-    iterations_wiki = 5
-    iterations_articles = 5
+    iterations_wiki = 1
+    iterations_articles = 1
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
