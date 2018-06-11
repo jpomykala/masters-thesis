@@ -200,34 +200,34 @@ def accuracy_time_report(train_sizes, iterations, korpus_path, korpus_name):
 
 
 def cls_report(korpus_path, korpus_name):
-    train_size = 0.6
+    train_size = 0.3
     X_test, X_train, y_test, y_train, files_data = load_string_korpus(korpus_path, train_size)
     target_names = files_data.target_names
     iter = 1
 
-    calc_wrapper.report_data(
-        'fastText - ' + korpus_name, iter, y_test, target_names, fastTextMethod.learn_predict,
-        (X_train, X_test, y_train, ft_clf))
-    calc_wrapper.report_data(
-        'NaiveBayes - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
-        (X_train, X_test, y_train, nb_clf, d_vectorizer))
-    calc_wrapper.report_data(
-        'SVM - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
-        (X_train, X_test, y_train, svm_clf, d_vectorizer))
-    calc_wrapper.report_data(
-        'Drzewo decyzyjne - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
-        (X_train, X_test, y_train, dt_clf, d_vectorizer))
+    # calc_wrapper.report_data(
+    #     'fastText - ' + korpus_name, iter, y_test, target_names, fastTextMethod.learn_predict,
+    #     (X_train, X_test, y_train, ft_clf))
+    # calc_wrapper.report_data(
+    #     'NaiveBayes - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
+    #     (X_train, X_test, y_train, nb_clf, d_vectorizer))
+    # calc_wrapper.report_data(
+    #     'SVM - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
+    #     (X_train, X_test, y_train, svm_clf, d_vectorizer))
+    # calc_wrapper.report_data(
+    #     'Drzewo decyzyjne - ' + korpus_name, iter, y_test, target_names, bowMethod.learn_predict,
+    #     (X_train, X_test, y_train, dt_clf, d_vectorizer))
 
     # confusion matrix
-    y_pred_ft, fit_time, predict_time = fastTextMethod.learn_predict(X_train, X_test, y_train, ft_clf)
-    show_confusion_matrix(y_test, y_pred_ft, target_names, 'fasttext', 'fastText', korpus_name)
-
-    y_pred_nb, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, nb_clf, d_vectorizer)
-    show_confusion_matrix(y_test, y_pred_nb, target_names, 'naivebayes', 'NaiveBayes', korpus_name)
-
-    y_pred_svm, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, svm_clf,
-                                                                 d_vectorizer)
-    show_confusion_matrix(y_test, y_pred_svm, target_names, 'svm', 'SVM', korpus_name)
+    # y_pred_ft, fit_time, predict_time = fastTextMethod.learn_predict(X_train, X_test, y_train, ft_clf)
+    # show_confusion_matrix(y_test, y_pred_ft, target_names, 'fasttext', 'fastText', korpus_name)
+    #
+    # y_pred_nb, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, nb_clf, d_vectorizer)
+    # show_confusion_matrix(y_test, y_pred_nb, target_names, 'naivebayes', 'NaiveBayes', korpus_name)
+    #
+    # y_pred_svm, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, svm_clf,
+    #                                                              d_vectorizer)
+    # show_confusion_matrix(y_test, y_pred_svm, target_names, 'svm', 'SVM', korpus_name)
 
     y_pred_dt, fit_time, predict_time = bowMethod.learn_predict(X_train, X_test, y_train, dt_clf, d_vectorizer)
     show_confusion_matrix(y_test, y_pred_dt, target_names, 'decisiontree', 'Drzewo decyzyjne', korpus_name)
@@ -244,8 +244,8 @@ def load_string_korpus(korpus_path, train_size):
 
 
 def start_tests():
-    iterations_wiki = 5
-    iterations_articles = 5
+    iterations_wiki = 10
+    iterations_articles = 20
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
@@ -268,11 +268,11 @@ def start_tests():
 
     if len(sys.argv) < 2:
         print("loading full data set")
-        data_sets = wiki_data_sets + article_data_sets
+        data_sets = article_data_sets + wiki_data_sets
 
     for korpus_name, korpus_path, iter_size, train_size in data_sets:
         print('Korpus name: %s' % korpus_name)
-        accuracy_time_report(train_size, iter_size, korpus_path, korpus_name)
+        # accuracy_time_report(train_size, iter_size, korpus_path, korpus_name)
         cls_report(korpus_path, korpus_name)
 
 

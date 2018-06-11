@@ -1,7 +1,7 @@
 from sklearn.datasets import load_files
 
 from src import xml_reader, clarin_api
-from src.corpus_data import show_summary_plot, show_classes_summary_plot, summary_all_ign_words
+from src.corpus_data import average_words_count, count_files_for_path
 
 raw_wiki = "../data/wiki/raw"
 text_wiki = "../data/wiki/text"
@@ -9,12 +9,11 @@ ccl_wiki = "../data/wiki/ccl"
 lemma_wiki = "../data/wiki/lemma"
 noun_wiki = "../data/wiki/noun"
 
-# raw_wiki = "../data/wiki/raw"
-# text_wiki = "../data/wiki/text"
+raw_articles = "../data/korpus/raw"
+text_articles = "../data/korpus/text"
 ccl_articles = "../data/korpus/ccl"
 lemma_articles = "../data/korpus/lemma"
 noun_articles = "../data/korpus/noun"
-
 
 # lemma_dir = "../data/korpus/lemma"
 # text_category = "../data/korpus/text"
@@ -24,14 +23,18 @@ noun_articles = "../data/korpus/noun"
 
 # redistribute_to_categories_wiki(raw_wiki, categories_wiki)
 
-# show_summary_plot(text_wiki, 100)
-# show_classes_summary_plot(ccl_wiki, 'Wikipedia - tag summary')
-# show_classes_summary_plot(ccl_articles, 'Articles - tag summary')
-# summary_all_ign_words(ccl_articles, 'Articles - unknown summary', filter=80)
-# summary_all_ign_words(ccl_wiki, 'Wikipedia - unknown summary', filter=200)
+# count_files_for_path('count-files-wikipedia', text_wiki, 100)
+count_files_for_path('count-files-articles', raw_articles, 100)
+# average_words_count(lemma_wiki, 'avg-lemma-count-wikipedia')
+# average_words_count(lemma_articles, 'avg-lemma-count-articles')
+# show_classes_summary_plot(ccl_wiki,  'gram-classes-wikipedia', 'Wikipedia - wystąpienia klas gramatycznych')
+# show_classes_summary_plot(ccl_articles, 'gram-classes-articles', 'Artykuły - wystąpienia klas gramatycznych')
+# summary_all_ign_words(ccl_articles, 'unknown-words-articles', 'Artykuły - nieznane słowa', filter=80)
+# summary_all_ign_words(ccl_wiki, 'unknown-words-wikipedia', 'Wikipedia - nieznane słowa', filter=200)
 
-summary_size()
+# summary_size()
 print("koniec")
+
 
 # read files
 # files = xml_reader.read_files_from_dir(path=raw_files, max_per_dir=800)
@@ -59,12 +62,11 @@ def ccl_to_lemma():
 
 
 def ccl_to_lemma_nouns():
-    #ccls to lemma nouns
+    # ccls to lemma nouns
     ccl_data = load_files(ccl_articles)
     files = [f for f in ccl_data.filenames]
     for input_file in files:
         output_file = input_file.replace("data/korpus/ccl", "data/korpus/noun", 1)
         xml_reader.ccl_to_lemma_noun(input_file, output_file)
-
 
 # ccl_to_lemma_nouns()

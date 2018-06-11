@@ -140,13 +140,14 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf, vect):
 
 
 def start_tests():
-    iterations_wiki = 5
-    iterations_articles = 5
+    iterations_wiki = 2
+    iterations_articles = 2
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
-    wiki_data_sets = [('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
-                      ('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki)]
+    wiki_data_sets = [('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
+                      # ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
+                      ]
 
     article_data_sets = [('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),
                          ('Artykuły (rzeczowniki)', "../data/korpus/noun", iterations_articles, train_sizes_articles)]

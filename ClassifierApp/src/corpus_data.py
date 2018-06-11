@@ -12,21 +12,26 @@ from string import digits
 from src.consts import plot_save_path, plotFormat, dpi
 
 
-def show_summary_plot(path, filter_less_than=0):
+def count_files_for_path(file_name, path, filter_less_than=0):
     path = end_path_with_slash(path)
     corpus_summary = summarize(path)
-    corpus_summary_filtered = {k: v for k, v in corpus_summary.items() if v > filter_less_than}
+    output = {k: v for k, v in corpus_summary.items() if v > filter_less_than}
+    output = OrderedDict(sorted(output.items(), key=lambda kv: kv[1]))
     plt.gcf().subplots_adjust(left=0.24)
-    labels = tuple(corpus_summary_filtered.keys())
+    labels = tuple(output.keys())
     y_pos = np.arange(len(labels))
-    values = list(corpus_summary_filtered.values())
+    values = list(output.values())
     plt.barh(y_pos, values, align='center', alpha=0.5)
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba dokumentów')
+    plt.savefig(plot_save_path +
+                file_name + "." +
+                plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
 
 
-def show_classes_summary_plot(path, title):
+def show_classes_summary_plot(path, file_name, title):
     path = end_path_with_slash(path)
 
     all_in_path = glob2.glob(path + '/**/*.*')
@@ -45,7 +50,6 @@ def show_classes_summary_plot(path, title):
     result = ignCount / allCount
     print(result * 100)
 
-
     plt.gcf().subplots_adjust(left=0.24)
     labels = tuple(output.keys())
     y_pos = np.arange(len(labels))
@@ -54,12 +58,14 @@ def show_classes_summary_plot(path, title):
     plt.title(title)
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba wystąpień')
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path +
+                file_name + "." +
+                plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
 
 
-def summary_all_ign_words(path, title, filter=50):
+def summary_all_ign_words(path, file_name, title, filter=50):
     path = end_path_with_slash(path)
 
     all_in_path = glob2.glob(path + '/**/*.*')
@@ -80,7 +86,9 @@ def summary_all_ign_words(path, title, filter=50):
     plt.title(title)
     plt.yticks(y_pos, labels)
     plt.xlabel('Liczba wystąpień')
-    plt.savefig(plot_save_path + title.lower().replace(' ', '-') + "." + plotFormat, dpi=dpi,
+    plt.savefig(plot_save_path +
+                file_name + "." +
+                plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
 
@@ -113,11 +121,11 @@ def count_classes_for_file(input_file):
             else:
                 output[tag] = 1
 
-            if 'ign' in tag:
-                print(base)
+            # if 'ign' in tag:
+                # print(base)
 
     if 'ign' in output:
-        output['ign'] = output['ign'] * 4
+        output['ign'] = output['ign'] * 2.2
     return output
 
 
@@ -127,7 +135,7 @@ def end_path_with_slash(path):
     return path
 
 
-def summarize_plot_words(path):
+def average_words_count(path, file_name):
     path = end_path_with_slash(path)
     output = {}
     for root, dirs, files in os.walk(path):
@@ -135,14 +143,19 @@ def summarize_plot_words(path):
             files_count = summarize_words(root + directory)
             output[directory] = files_count
 
-    corpus_summary_filtered = {k: v for k, v in output.items() if v > 0}
+    output = {k: v for k, v in output.items() if v > 0}
+    output = OrderedDict(sorted(output.items(), key=lambda kv: kv[1]))
     plt.gcf().subplots_adjust(left=0.24)
-    labels = tuple(corpus_summary_filtered.keys())
+    labels = tuple(output.keys())
     y_pos = np.arange(len(labels))
-    values = list(corpus_summary_filtered.values())
+    values = list(output.values())
     plt.barh(y_pos, values, align='center', alpha=0.5)
     plt.yticks(y_pos, labels)
     plt.xlabel('Średnia liczba lematów')
+    plt.savefig(plot_save_path +
+                file_name + "." +
+                plotFormat, dpi=dpi,
+                format=plotFormat)
     plt.show()
     return output
 
