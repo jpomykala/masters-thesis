@@ -42,6 +42,7 @@ def draw_bow_word_plot(ax_samples, korpus_name):
     plt.xlabel('liczba próbek')
     title = 'Bag-Of-Words - tfidf - ' + korpus_name + ' - słowa - n-gram'
     plt.title(title)
+    plt.ylim(0, 1)
     plt.legend()
     plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
@@ -55,6 +56,7 @@ def draw_bow_char_plot(ax_samples, korpus_name):
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('dokładność')
     plt.xlabel('liczba próbek')
+    plt.ylim(0, 1)
     title = 'Bag-Of-Words - tfidf - ' + korpus_name + ' - znaki - n-gram'
     plt.title(title)
     plt.legend()
@@ -140,13 +142,13 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf, vect):
 
 
 def start_tests():
-    iterations_wiki = 2
-    iterations_articles = 2
+    iterations_wiki = 6
+    iterations_articles = 10
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
     wiki_data_sets = [('Wikipedia (rzeczowniki)', "../data/wiki/noun", iterations_wiki, train_sizes_wiki),
-                      # ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
+                      ('Wikipedia', "../data/wiki/lemma", iterations_wiki, train_sizes_wiki),
                       ]
 
     article_data_sets = [('Artykuły', "../data/korpus/lemma", iterations_articles, train_sizes_articles),

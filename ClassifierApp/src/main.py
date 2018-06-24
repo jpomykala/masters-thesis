@@ -46,16 +46,17 @@ def show_confusion_matrix(y_test, y_pred, class_names, file_name, title, korpus_
 
 
 def draw_fit_time_plot(ax_samples, korpus_name):
-    plt.plot(ax_samples, ft_fit_times, 'c-+', label="fastText")
-    plt.plot(ax_samples, nb_fit_times, 'r-*', label="NaiveBayes")
-    plt.plot(ax_samples, svm_fit_times, 'g-^', label="SVM")
-    plt.plot(ax_samples, dt_fit_times, 'b-s', label="Drzewo decyzyjne")
+    plt.plot(ax_samples, ft_fit_times, 'c-+', label="fastText (zmodyfikowany)")
+    plt.plot(ax_samples, nb_fit_times, 'r-*', label="NaiveBayes + BoW")
+    plt.plot(ax_samples, svm_fit_times, 'g-^', label="SVM + BoW")
+    plt.plot(ax_samples, dt_fit_times, 'b-s', label="Drzewo decyzyjne + BoW")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('czas [s]')
     plt.xlabel('liczba próbek')
     title = 'Czas nauki - ' + korpus_name
     plt.title(title)
     plt.legend()
+    plt.ylim(0, 13) #8
     plt.savefig(plot_save_path +
                 'fit-time-' +
                 korpus_name.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
@@ -64,16 +65,17 @@ def draw_fit_time_plot(ax_samples, korpus_name):
 
 
 def draw_predict_time_plot(ax_samples, korpus_name):
-    plt.plot(list(reversed(ax_samples)), list(reversed(ft_predict_times)), 'c-+', label="fastText")
-    plt.plot(list(reversed(ax_samples)), list(reversed(nb_predict_times)), 'r-*', label="NaiveBayes")
-    plt.plot(list(reversed(ax_samples)), list(reversed(svm_predict_times)), 'g-^', label="SVM")
-    plt.plot(list(reversed(ax_samples)), list(reversed(dt_predict_times)), 'b-s', label="Drzewo decyzyjne")
+    plt.plot(list(reversed(ax_samples)), list(reversed(ft_predict_times)), 'c-+', label="fastText (zmodyfikowany)")
+    plt.plot(list(reversed(ax_samples)), list(reversed(nb_predict_times)), 'r-*', label="NaiveBayes + BoW")
+    plt.plot(list(reversed(ax_samples)), list(reversed(svm_predict_times)), 'g-^', label="SVM + BoW")
+    plt.plot(list(reversed(ax_samples)), list(reversed(dt_predict_times)), 'b-s', label="Drzewo decyzyjne + BoW")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('czas [s]')
     plt.xlabel('liczba próbek')
     title = 'Czas klasyfikacji - ' + korpus_name
     plt.title(title)
     plt.legend()
+    plt.ylim(0, 2.5) # 1.5
     plt.savefig(plot_save_path +
                 'predict-time-' +
                 korpus_name.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
@@ -82,15 +84,16 @@ def draw_predict_time_plot(ax_samples, korpus_name):
 
 
 def draw_time_plot(ax_samples, korpus_name):
-    plt.plot(ax_samples, ft_times, 'c-+', label="fastText")
-    plt.plot(ax_samples, nb_times, 'r-*', label="NaiveBayes")
-    plt.plot(ax_samples, svm_times, 'g-^', label="SVM")
-    plt.plot(ax_samples, dt_times, 'b-s', label="Drzewo decyzyjne")
+    plt.plot(ax_samples, ft_times, 'c-+', label="fastText (zmodyfikowany)")
+    plt.plot(ax_samples, nb_times, 'r-*', label="NaiveBayes + BoW")
+    plt.plot(ax_samples, svm_times, 'g-^', label="SVM + BoW")
+    plt.plot(ax_samples, dt_times, 'b-s', label="Drzewo decyzyjne + BoW")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('czas [s]')
     plt.xlabel('liczba próbek')
     title = 'Całkowity czas pracy - ' + korpus_name
     plt.title(title)
+    plt.ylim(0, 13)
     plt.legend()
     plt.savefig(plot_save_path + 'total-work-time-' +
                 korpus_name.lower().replace(' ', '-').replace('ł',
@@ -101,13 +104,14 @@ def draw_time_plot(ax_samples, korpus_name):
 
 
 def draw_accuracy_plot(ax_samples, korpus_name):
-    plt.plot(ax_samples, ft_accuracies, 'c-+', label="fastText")
-    plt.plot(ax_samples, nb_accuracies, 'r-*', label="NaiveBayes")
-    plt.plot(ax_samples, svm_accuracies, 'g-^', label="SVM")
-    plt.plot(ax_samples, dt_accuracies, 'b-s', label="Drzewo decyzyjne")
+    plt.plot(ax_samples, ft_accuracies, 'c-+', label="fastText (zmodyfikowany)")
+    plt.plot(ax_samples, nb_accuracies, 'r-*', label="NaiveBayes + BoW")
+    plt.plot(ax_samples, svm_accuracies, 'g-^', label="SVM + BoW")
+    plt.plot(ax_samples, dt_accuracies, 'b-s', label="Drzewo decyzyjne + BoW")
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('dokładność')
     plt.xlabel('liczba próbek')
+    plt.ylim(0, 1)
     title = 'Dokładność - ' + korpus_name
     plt.title(title)
     plt.legend()
@@ -244,8 +248,8 @@ def load_string_korpus(korpus_path, train_size):
 
 
 def start_tests():
-    iterations_wiki = 10
-    iterations_articles = 20
+    iterations_wiki = 3
+    iterations_articles = 5
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
@@ -272,8 +276,8 @@ def start_tests():
 
     for korpus_name, korpus_path, iter_size, train_size in data_sets:
         print('Korpus name: %s' % korpus_name)
-        # accuracy_time_report(train_size, iter_size, korpus_path, korpus_name)
-        cls_report(korpus_path, korpus_name)
+        accuracy_time_report(train_size, iter_size, korpus_path, korpus_name)
+        # cls_report(korpus_path, korpus_name)
 
 
 start_tests()

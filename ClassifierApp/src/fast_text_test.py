@@ -16,7 +16,7 @@ from src import calc_wrapper
 from src.consts import plotFormat, dpi, plot_save_path
 from src.method import fastTextMethod
 
-n_classes = 7
+n_classes = 34
 
 ft_ngram_clf_1 = FastText(dim=n_classes, min_count=15, loss='ns', epoch=100, bucket=200000, word_ngrams=1)
 ft_ngram_clf_2 = FastText(dim=n_classes, min_count=15, loss='ns', epoch=100, bucket=200000, word_ngrams=2)
@@ -48,9 +48,10 @@ def draw_epoch_plot(ax_samples, korpus_name):
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('dokładność')
     plt.xlabel('liczba próbek')
-    title = 'fastText - epoch - ' + korpus_name
+    title = 'fastText (zmodyfikowany) - epoch - ' + korpus_name
     plt.title(title)
     plt.legend()
+    plt.ylim(0, 1)
     plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
@@ -63,9 +64,11 @@ def draw_ngram_plot(ax_samples, korpus_name):
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('dokładność')
     plt.xlabel('liczba próbek')
-    title = 'fastText - ngram - ' + korpus_name
+    title = 'fastText (zmodyfikowany) - ngram - ' + korpus_name
     plt.title(title)
     plt.legend()
+    plt.ylim(0, 1)
+
     plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
@@ -80,9 +83,11 @@ def draw_min_count_plot(ax_samples, korpus_name):
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('dokładność')
     plt.xlabel('liczba próbek')
-    title = 'fastText - min_count - ' + korpus_name
+    title = 'fastText (zmodyfikowany) - min_count - ' + korpus_name
     plt.title(title)
     plt.legend()
+    plt.ylim(0, 1)
+
     plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
@@ -95,9 +100,11 @@ def draw_loss_plot(ax_samples, korpus_name):
     plt.grid(color='tab:gray', linestyle='-', linewidth=0.15)
     plt.ylabel('dokładność')
     plt.xlabel('liczba próbek')
-    title = 'fastText - loss - ' + korpus_name
+    title = 'fastText (zmodyfikowany) - loss - ' + korpus_name
     plt.title(title)
     plt.legend()
+    plt.ylim(0, 1)
+
     plt.savefig(plot_save_path + title.lower().replace(' ', '-').replace('ł', 'l') + "." + plotFormat, dpi=dpi,
                 format=plotFormat)
     plt.show()
@@ -206,8 +213,8 @@ def simple_wrapper(X_test, X_train, iterations, y_test, y_train, clf):
 
 
 def start_tests():
-    iterations_wiki = 2
-    iterations_articles = 2
+    iterations_wiki = 5
+    iterations_articles = 10
     train_sizes_wiki = np.arange(0.01, 0.51, 0.06)
     train_sizes_articles = np.arange(0.01, 0.51, 0.03)
 
