@@ -1,0 +1,45 @@
+\chapter{Wstęp}
+\section{Wprowadzenie}
+Zasadniczym problemem badawczym podejmowanym w niniejszej pracy dyplomowej jest przeprowadzenie analizy porównawczej różnych metod stosowanych przy kategoryzacji tekstów, ekstrakcja cech określających przynależność danego tekstu do grupy tematycznej oraz klasyfikacja zwektoryzowanych dokumentów pomocy wybranych klasyfikatorów z nauczycielem. Tekstami wejściowymi, które zostały poddane analizie, są artykuły pobrane z wybranych portali internetowych oraz, jako drugi korpus porównawczy, wpisy z serwisu Wikipedia udostępnione w repozytorium Clarin.
+
+\section{Przetwarzanie języka naturalnego}
+Przetwarzanie i analiza języka naturalnego za sprawą coraz szybszych i wydajniejszych komputerów znajduje wiele zastosowań nie tylko w przemyśle, ale i w życiu codziennym każdego użytkownika dzisiejszego Internetu. Początkowo prace nad elementami lingwistyki były stosowane jedynie do wykrywania nieprawidłowości i oczywistych błędów w komputerowych edytorach, z czasem rozwój procesorów oraz coraz niższe ceny za pamięć pozwoliły na przetwarzanie oraz analizowanie coraz większej ilości danych w relatywnie krótkim czasie. Umożliwiło to również stosowanie bardziej skomplikowanych algorytmów, choć oczywiste optymalizacje w celu skrócenia czasu przetwarzania wciąż są stosowane. \cite{indeksowanietresci}
+
+\section{Cel badań}
+Podstawowym celem było opracowanie systemu automatycznego przypisywania tekstów w języku polskim do grup tematycznych oraz selekcja zbioru cech deskryptywnych opisujących informacje świadczące o przynależności tekstu do grupy tematycznej. W tym celu została stworzona aplikacja w języku Python, która implementowała model \textit{Bag-Of-Words} wraz z normalizacją \textit{tf-idf} oraz trzy klasyfikatory z biblioteki \textit{SciKit Learn}. Dodatkowo, zaimplementowany został wrapper dla biblioteki \textit{fastText} aby porównać skuteczność drugiego modelu opartego o \textit{word embedding}. Aplikacja uruchamia się w trybie konsolowym, dzięki czemu możliwy jest swobodny dobór parametrów. Wszystkie trzy klasyfikatory należą do grupy algorytmów klasyfikacji z nauczycielem, dlatego też ważnym aspektem niniejszej pracy było przygotowanie danych wejściowych. Następnie dokonana została ekstrakcja cech deskryptywnych, dobranych empirycznie w celu uzyskania jak najlepszego wyniku. W pracy również wskazane zostały parametry, które miały największy wpływ na zmianę wskaźnika jakości klasyfikacji, obliczonego dzięki sprawdzeniu, ilu tekstom klasyfikator przypisał poprawne grupy tematyczne. Odbyło się to dzięki podziałowi sklasyfikowanych danych wejściowych na dane treningowe oraz testowe. Za dane wyjściowe przyjęto artykuły pobrane ze stron takich jak: 
+\begin{itemize}
+\item historykon.pl
+\item pap.pl
+\item focus.pl
+\item kafeteria.pl
+\item niebezpiecznik.pl
+\item purepc.pl
+\item zaufanatrzeciastrona.pl
+\end{itemize}
+
+Do głównych wyzwań jakie zostały podjęte w pracy należy zaliczyć:
+\begin{itemize}
+\item probabilistyczne dobranie cech deskryptywnych,
+\item przygotowanie odpowiednich narzędzi,
+\item konstrukcja środowiska testowego,
+\item przygotowanie poprawnych językowo danych wejściowych wraz z poprawnymi grupami tematycznymi.
+\end{itemize}
+
+\section{Zakres pracy}
+Główną częścią pracy było zbadanie różnych metod klasyfikacji tekstu, dobieranie odpowiednich parametrów oraz wyselekcjonowanie cech w celu uzyskania najlepszej jakości dopasowania każdego z klasyfikatorów. W pracy nie został zaimplementowany własny algorytm, jednak podjęto próbę modyfikacji algorytmów oraz sposobu przetwarzania danych w celu poprawy wyników. Praca skupiała się głównie na naukowym porównaniu jakości oraz wydajności wybranych metod, klasyfikatorów oraz dokumentów wejściowych. Wszystkie zastosowane klasyfikatory należą do rodziny klasyfikatorów z nauczycielem, co oznacza, że rozpatrywane klasy zostały dobrane przez autora pracy na podstawie wcześniejszej analizy zebranego korpusu.
+
+\section{Wykorzystane technologie}
+
+W pracy dobrano technologie, które pozwoliły na jak najłatwiejszą pracę z wybranymi klasyfikatorami oraz przetwarzanie danych tekstowych w prosty sposób. System został podzielony na dwie aplikacje. W języku Java napisana została aplikacja odpowiedzialna za pobieranie, wstępne przetwarzanie oraz zapisywanie danych w formacie XML. Część badawcza pracy została napisana w języku Python; nastąpiła w niej dokładniejsza analiza korpusu, właściwe przetworzenie tekstu, wektoryzacja, klasyfikacja oraz badanie jakości. 
+\begin{itemize}
+\setlength\itemsep{0.6em}
+\item \textbf{Python 3.6} - interpretowany język programowania wysokiego poziomu do programowania ogólnego przeznaczenia.\cite{python-reference} Stworzony przez Guido van Rossuma i po raz pierwszy wydany w 1991 roku. Został zastosowany w pracy ze względu na jego dużą popularność, która, niejednokrotnie umożliwiła wsparcie ze strony społeczności tegoż języka.
+\item \textbf{NumPy} - podstawowy pakiet do obliczeń naukowych w języku Python. Pozwala na manipulację danymi w prostszy sposób niż za pomocą wbudowanych funkcji w język Python. \cite{numpy-reference}
+\item \textbf{MatPlot} - biblioteka, która pozwala na generowanie wykresów w kodzie języka Python. \cite{matplot-reference}
+\item \textbf{SciKit-Learn 0.19.1} - darmowe narzędzie stosowane do komputerowego nauczania maszynowego dla języka Python. Zawiera różne algorytmy klasyfikacji, regresji i grupowania, w tym Support Vector Machine, NaiveBayes, drzewa decyzyjne. Aby zapewnić maksymalną rzetelność przeprowadzanych testów, w szczególności tych, które dotyczyły pomiarów czasowych, wszystkie wykorzystane w pracy klasyfikatory pochodziły z tej biblioteki.  \cite{skl-reference}
+\item \textbf{Java 9} - uniwersalny język programowania, został zastosowany ze względu na łatwą obsługę współbieżności, obiektowość, doświadczenie autora pracy oraz mnogość dostępnych bibliotek. \cite{java-reference} Oryginalnie stworzona przez firmę Sun Microsystems w 1995 roku, aktualnie wspierana przez firmę Oracle. Zastosowana wersja, w momencie pisania pracy jest aktualnie obowiązującą stabilną wersją. \cite{java9-reference}
+\item \textbf{Spring Boot 2.0 RC3} - framework Javowy, pozwalający na pisanie skalowalnych aplikacji webowych, workerów. Został wybrany, aby ułatwić pracę wymagającą dostępu do danych internetowych oraz dzięki swojej modularności, co pozwoli w przyszłości w prosty sposób rozwijać aplikację. \cite{spring-boot-reference}
+\item \textbf{Spring Boot Shell 2.0 M2} - jeden z projektów od twórców frameworka Spring, umożliwia stworzenie aplikacji działającej przez interfejs konsolowy (CLI), dzięki czemu wszystkie parametry można ustalić za pomocą flag oraz argumentów. \cite{spring-shell-reference}
+\end{itemize}
+
+Wszystkie wykorzystane narzędzia, które zostały wykorzystane w pracy, są darmowe i udostępnianie na zasadzie wolnego oprogramowania. 
